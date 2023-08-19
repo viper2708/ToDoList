@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupWindow
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +42,6 @@ class TaskFragment : Fragment() {
 
         val addTaskButton = view.findViewById<Button>(R.id.addTaskButton)
         addTaskButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Button Clicked", Toast.LENGTH_SHORT).show()
             val popupView = layoutInflater.inflate(R.layout.popup_add_task, null)
             addTaskFromPopup(popupView)
         }

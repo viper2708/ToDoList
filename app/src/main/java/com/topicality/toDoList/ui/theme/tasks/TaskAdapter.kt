@@ -23,7 +23,8 @@ class TaskAdapter(private val tasks: List<TaskFragment.Task>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
-        holder.taskRadioButton.isChecked = false // Clear the radio button state
+        holder.taskRadioButton.isChecked = task.completed
+        holder.taskRadioButton.isEnabled = !task.completed
         holder.taskTextView.text = task.name
         if (task.completed) {
             holder.taskTextView.paintFlags = holder.taskTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
