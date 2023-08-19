@@ -18,7 +18,8 @@ class TaskFragment : Fragment() {
 
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var databaseHelper: TaskDatabaseHelper
-    private val tasks = mutableListOf<String>()
+    data class Task(val name: String, var completed: Boolean = false)
+    private val tasks = mutableListOf<Task>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,11 +66,12 @@ class TaskFragment : Fragment() {
             val taskName = taskNameEditText.text.toString()
 
             if (taskName.isNotEmpty()) {
-                tasks.add(taskName)
+                val newTask = Task(taskName)
+                tasks.add(newTask)
                 taskAdapter.notifyDataSetChanged()
 
                 if (::databaseHelper.isInitialized) {
-                    databaseHelper.insertTask(taskName)
+                    databaseHelper.insertTask(taskName, false)
                 }
             }
 
