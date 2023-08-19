@@ -8,8 +8,9 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.topicality.toDoList.R
+import com.topicality.toDoList.roomDb.TaskEntity
 
-class TaskAdapter(private val tasks: List<TaskFragment.Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val tasks: List<TaskEntity>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val taskRadioButton: RadioButton = itemView.findViewById(R.id.taskRadioButton)
@@ -23,17 +24,17 @@ class TaskAdapter(private val tasks: List<TaskFragment.Task>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
-        holder.taskRadioButton.isChecked = task.completed
-        holder.taskRadioButton.isEnabled = !task.completed
-        holder.taskTextView.text = task.name
-        if (task.completed) {
+        holder.taskRadioButton.isChecked = task.isCompleted
+        holder.taskRadioButton.isEnabled = !task.isCompleted
+        holder.taskTextView.text = task.taskName
+        if (task.isCompleted) {
             holder.taskTextView.paintFlags = holder.taskTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
             holder.taskTextView.paintFlags = holder.taskTextView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
 
         holder.taskRadioButton.setOnClickListener {
-            task.completed = holder.taskRadioButton.isChecked
+            task.isCompleted = holder.taskRadioButton.isChecked
             notifyDataSetChanged()
         }
     }

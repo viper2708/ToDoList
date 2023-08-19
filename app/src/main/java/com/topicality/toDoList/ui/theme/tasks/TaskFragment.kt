@@ -10,16 +10,21 @@ import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.topicality.toDoList.R
-import com.topicality.toDoList.data.TaskDatabaseHelper
+import com.topicality.toDoList.roomDb.AppDatabase
+import com.topicality.toDoList.roomDb.TaskDao
+import com.topicality.toDoList.roomDb.TaskEntity
 import com.topicality.toDoList.ui.theme.tasks.TaskAdapter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class TaskFragment : Fragment() {
 
     private lateinit var taskAdapter: TaskAdapter
-    private lateinit var databaseHelper: TaskDatabaseHelper
-    data class Task(val name: String, var completed: Boolean = false)
-    private val tasks = mutableListOf<Task>()
+    private val tasks = mutableListOf<TaskEntity>()
+    private lateinit var taskDao: TaskDao
+    private lateinit var database: AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +37,9 @@ class TaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        databaseHelper = TaskDatabaseHelper(requireContext())
+        // Initialize Room database
+        database = Room.inMemoryDatabaseBuilder(requireContext(), AppDatabase::class.java).build()
+        taskDao = database.taskDao()
 
         val taskRecyclerView = view.findViewById<RecyclerView>(R.id.taskRecyclerView)
         taskAdapter = TaskAdapter(tasks)
@@ -65,13 +72,10 @@ class TaskFragment : Fragment() {
             val taskName = taskNameEditText.text.toString()
 
             if (taskName.isNotEmpty()) {
-                val newTask = Task(taskName)
-                tasks.add(newTask)
+                val task = TaskEntity(taskName = taskName, isCompleted = false)
+                insertTask(task)
+                tasks.add(task)
                 taskAdapter.notifyDataSetChanged()
-
-                if (::databaseHelper.isInitialized) {
-                    databaseHelper.insertTask(taskName, false)
-                }
             }
 
             // Dismiss the popup window
@@ -79,6 +83,12 @@ class TaskFragment : Fragment() {
         }
 
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0)
+    }
+
+    private fun insertTask(task: TaskEntity) {
+        GlobalScope.launch {
+            taskDao.insertTask(task)
+        }
     }
 
 }
