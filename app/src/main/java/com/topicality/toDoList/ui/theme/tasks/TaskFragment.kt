@@ -1,3 +1,4 @@
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -55,7 +56,7 @@ class TaskFragment : Fragment() {
         // Show the popup window
         val popupWindow = PopupWindow(
             rootView,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+            (Resources.getSystem().displayMetrics.widthPixels * 0.8).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
         )

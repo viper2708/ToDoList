@@ -9,7 +9,11 @@
         android:id="@+id/taskNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter task name" />
+        android:hint="Enter task name"
+        android:inputType="textMultiLine"
+        android:minLines="1"
+        android:maxLines="4"
+        android:scrollbars="vertical"/>
 
     <Button
         android:id="@+id/addTaskButtonPopup"
