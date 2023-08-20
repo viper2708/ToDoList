@@ -2,7 +2,6 @@ package com.topicality.toDoList
 
 import TaskFragment
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.google.android.gms.ads.AdRequest
