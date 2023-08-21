@@ -20,6 +20,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.google.accompanist.appcompattheme.AppCompatTheme
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -32,8 +33,9 @@ class TodoActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppCompatTheme {
-                TodoNavGraph()
+                AppLayout()
             }
         }
+        MobileAds.initialize(this) {}
     }
 }

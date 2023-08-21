@@ -140,6 +140,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version = "22.2.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

@@ -17,6 +17,12 @@
 package com.example.android.architecture.blueprints.todoapp
 
 import android.app.Activity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.rememberDrawerState
@@ -25,6 +31,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -40,8 +51,26 @@ import com.example.android.architecture.blueprints.todoapp.statistics.Statistics
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailScreen
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksScreen
 import com.example.android.architecture.blueprints.todoapp.util.AppModalDrawer
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
+
+@Composable
+fun AppLayout() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        TodoNavGraph()
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        AdBanner()
+    }
+}
 
 @Composable
 fun TodoNavGraph(
@@ -111,6 +140,30 @@ fun TodoNavGraph(
             )
         }
     }
+}
+
+@Composable
+fun AdBanner() {
+    val context = LocalContext.current
+
+    // Create AdView with AdSize.BANNER
+    val adView = AdView(context)
+    adView.setAdSize(AdSize.BANNER)
+    adView.adUnitId = "ca-app-pub-1097657497287401/1320730307"
+
+    // Load the ad
+    val adRequest = AdRequest.Builder()
+        .build()
+    adView.loadAd(adRequest)
+
+    // Composable to display the ad
+    AndroidView(
+        factory = { adView },
+        modifier = Modifier.fillMaxWidth(),
+        update = {
+            it.resume()
+        }
+    )
 }
 
 // Keys for navigation

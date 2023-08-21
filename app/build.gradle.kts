@@ -122,6 +122,7 @@ dependencies {
     // Architecture Components
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.play.services.ads)
     ksp(libs.room.compiler)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
