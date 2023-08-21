@@ -1,40 +1,8 @@
-# Gradle
-.gradle/
-build/
-.idea/
-
-# Local configuration file (e.g., keystore)
+*.iml
+.gradle
 local.properties
-
-# Android Studio
+.idea
 .DS_Store
-.*.iml
-
-# User-specific files
-.gradle/
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/tasks.xml
-
-# Compiled output
-*.class
-*.jar
-*.apk
-
-# Logs
-*.log
-
-# Thumbnails
-.thumbnails/
-
-# Gradle Wrapper
-gradle-wrapper.jar
-
-# Android NDK
-local.properties
-
-# macOS
-.DS_Store
-
-# Windows thumbnail cache files
-Thumbs.db
+build
+captures
+.externalNativeBuild
