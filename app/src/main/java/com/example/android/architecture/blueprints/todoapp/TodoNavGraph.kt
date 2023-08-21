@@ -20,6 +20,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -64,11 +65,8 @@ fun AppLayout() {
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        TodoNavGraph()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        AdBanner()
+        TodoNavGraph(modifier = Modifier.fillMaxWidth().weight(1f))
+        AdBanner(modifier = Modifier.fillMaxWidth().height(48.dp))
     }
 }
 
@@ -143,7 +141,7 @@ fun TodoNavGraph(
 }
 
 @Composable
-fun AdBanner() {
+fun AdBanner(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     // Create AdView with AdSize.BANNER
@@ -159,7 +157,7 @@ fun AdBanner() {
     // Composable to display the ad
     AndroidView(
         factory = { adView },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         update = {
             it.resume()
         }
