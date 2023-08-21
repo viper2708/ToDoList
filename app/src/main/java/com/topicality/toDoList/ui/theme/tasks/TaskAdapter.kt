@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.topicality.toDoList.R
 import com.topicality.toDoList.roomDb.TaskEntity
 
-class TaskAdapter(private val tasks: List<TaskEntity>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val tasks: MutableList<TaskEntity>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val taskRadioButton: RadioButton = itemView.findViewById(R.id.taskRadioButton)
@@ -20,6 +20,12 @@ class TaskAdapter(private val tasks: List<TaskEntity>) : RecyclerView.Adapter<Ta
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         return TaskViewHolder(itemView)
+    }
+
+    fun updateTasks(newTasks: List<TaskEntity>) {
+        tasks.clear()
+        tasks.addAll(newTasks)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {

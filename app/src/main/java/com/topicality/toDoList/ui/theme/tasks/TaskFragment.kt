@@ -16,7 +16,9 @@ import com.topicality.toDoList.roomDb.AppDatabase
 import com.topicality.toDoList.roomDb.TaskDao
 import com.topicality.toDoList.roomDb.TaskEntity
 import com.topicality.toDoList.ui.theme.tasks.TaskAdapter
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class TaskFragment : Fragment() {
@@ -25,6 +27,7 @@ class TaskFragment : Fragment() {
     private val tasks = mutableListOf<TaskEntity>()
     private lateinit var taskDao: TaskDao
     private lateinit var database: AppDatabase
+    private val fragmentScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +43,7 @@ class TaskFragment : Fragment() {
         // Initialize Room database
         database = Room.inMemoryDatabaseBuilder(requireContext(), AppDatabase::class.java).build()
         taskDao = database.taskDao()
+        loadTasks()
 
         val taskRecyclerView = view.findViewById<RecyclerView>(R.id.taskRecyclerView)
         taskAdapter = TaskAdapter(tasks)
@@ -85,10 +89,24 @@ class TaskFragment : Fragment() {
         popupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0)
     }
 
-    private fun insertTask(task: TaskEntity) {
-        GlobalScope.launch {
-            taskDao.insertTask(task)
+    fun insertTask(task: TaskEntity) {
+        fragmentScope.launch {
+            database.taskDao().insertTask(task)
         }
     }
+
+    // TaskFragment
+    private fun loadTasks() {
+        fragmentScope.launch {
+            val tasks = taskDao.getAllTasks()
+            taskAdapter.updateTasks(tasks)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentScope.cancel()
+    }
+
 
 }
